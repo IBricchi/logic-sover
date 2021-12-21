@@ -42,11 +42,11 @@ let token_data token_type =
     | R_BRACK -> TokenData(TokenAssoc.NA, -1, TokenArity.NA)
     | IDENT(_) -> TokenData(TokenAssoc.NA, -1, TokenArity.NA)
     | COMMA -> TokenData(RIGHT, 1, BINARY)
-    | OR -> TokenData(LEFT, 2, BINARY)
-    | AND -> TokenData(LEFT, 3, BINARY)
+    | OR -> TokenData(LEFT, 4, BINARY)
+    | AND -> TokenData(LEFT, 5, BINARY)
     | NOT -> TokenData(RIGHT, 6, UNARY)
-    | IMP -> TokenData(LEFT, 4, BINARY)
-    | BIMP -> TokenData(LEFT, 5, BINARY)
+    | IMP -> TokenData(LEFT, 3, BINARY)
+    | BIMP -> TokenData(LEFT, 2, BINARY)
 
 let token_assoc token_type =
     match token_data token_type with

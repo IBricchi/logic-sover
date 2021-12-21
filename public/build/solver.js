@@ -2223,19 +2223,19 @@ var solver = (function (exports) {
                 return new TokenData(0, new TokenAssoc(1), 1, new TokenArity(1));
             }
             case 4: {
-                return new TokenData(0, new TokenAssoc(0), 2, new TokenArity(1));
+                return new TokenData(0, new TokenAssoc(0), 4, new TokenArity(1));
             }
             case 5: {
-                return new TokenData(0, new TokenAssoc(0), 3, new TokenArity(1));
+                return new TokenData(0, new TokenAssoc(0), 5, new TokenArity(1));
             }
             case 6: {
                 return new TokenData(0, new TokenAssoc(1), 6, new TokenArity(0));
             }
             case 7: {
-                return new TokenData(0, new TokenAssoc(0), 4, new TokenArity(1));
+                return new TokenData(0, new TokenAssoc(0), 3, new TokenArity(1));
             }
             case 8: {
-                return new TokenData(0, new TokenAssoc(0), 5, new TokenArity(1));
+                return new TokenData(0, new TokenAssoc(0), 2, new TokenArity(1));
             }
             default: {
                 return new TokenData(0, new TokenAssoc(2), -1, new TokenArity(2));
@@ -2384,6 +2384,7 @@ var solver = (function (exports) {
     }
 
     function parse_helper(stack_mut, op_stack_mut, token_stream_mut) {
+        let op_op, op_op_2, op_op_6, op_op_4, op_op_10, op_op_8;
         parse_helper:
         while (true) {
             const stack = stack_mut, op_stack = op_stack_mut, token_stream = token_stream_mut;
@@ -2392,6 +2393,7 @@ var solver = (function (exports) {
                 const op_1 = head(token_stream);
                 switch (op_1.tag) {
                     case 2: {
+                        op_1.fields[0];
                         stack_mut = cons(new Node$(2, op_1), stack);
                         op_stack_mut = op_stack;
                         token_stream_mut = t_1;
@@ -2405,16 +2407,19 @@ var solver = (function (exports) {
                     }
                     case 1: {
                         if (!isEmpty(op_stack)) {
-                            if (equals$1(token_arity(head(op_stack)), new TokenArity(0))) {
-                                stack_mut = cons(new Node$(0, head(op_stack), head(stack)), tail(stack));
-                                op_stack_mut = tail(op_stack);
+                            if ((tail(op_stack), (op_op = head(op_stack), equals$1(token_arity(op_op), new TokenArity(0))))) {
+                                const op_op_1 = head(op_stack);
+                                const op_t_1 = tail(op_stack);
+                                const operand_1 = head(stack);
+                                stack_mut = cons(new Node$(0, op_op_1, operand_1), tail(stack));
+                                op_stack_mut = op_t_1;
                                 token_stream_mut = cons(op_1, t_1);
                                 continue parse_helper;
                             }
                             else {
                                 let pattern_matching_result, op_op_3, op_t_3;
                                 if (!isEmpty(op_stack)) {
-                                    if (equals$1(token_arity(head(op_stack)), new TokenArity(1))) {
+                                    if ((tail(op_stack), (op_op_2 = head(op_stack), equals$1(token_arity(op_op_2), new TokenArity(1))))) {
                                         pattern_matching_result = 0;
                                         op_op_3 = head(op_stack);
                                         op_t_3 = tail(op_stack);
@@ -2429,7 +2434,8 @@ var solver = (function (exports) {
                                 switch (pattern_matching_result) {
                                     case 0: {
                                         const right_1 = head(stack);
-                                        stack_mut = cons(new Node$(1, op_op_3, head(tail(stack)), right_1), tail(tail(stack)));
+                                        const left_1 = head(tail(stack));
+                                        stack_mut = cons(new Node$(1, op_op_3, left_1, right_1), tail(tail(stack)));
                                         op_stack_mut = op_t_3;
                                         token_stream_mut = cons(op_1, t_1);
                                         continue parse_helper;
@@ -2473,7 +2479,7 @@ var solver = (function (exports) {
                             case 0: {
                                 let pattern_matching_result_2, op_op_5, op_t_6;
                                 if (!isEmpty(op_stack)) {
-                                    if (token_prec(op_1) <= token_prec(head(op_stack))) {
+                                    if ((tail(op_stack), (op_op_4 = head(op_stack), token_prec(op_1) <= token_prec(op_op_4)))) {
                                         pattern_matching_result_2 = 0;
                                         op_op_5 = head(op_stack);
                                         op_t_6 = tail(op_stack);
@@ -2491,7 +2497,8 @@ var solver = (function (exports) {
                                         switch (matchValue_2.tag) {
                                             case 1: {
                                                 const right_2 = head(stack);
-                                                stack_mut = cons(new Node$(1, op_op_5, head(tail(stack)), right_2), tail(tail(stack)));
+                                                const left_2 = head(tail(stack));
+                                                stack_mut = cons(new Node$(1, op_op_5, left_2, right_2), tail(tail(stack)));
                                                 op_stack_mut = op_t_6;
                                                 token_stream_mut = cons(op_1, t_1);
                                                 continue parse_helper;
@@ -2500,7 +2507,8 @@ var solver = (function (exports) {
                                                 throw (new Error("unexpected token"));
                                             }
                                             default: {
-                                                stack_mut = cons(new Node$(0, op_op_5, head(stack)), tail(stack));
+                                                const operand_2 = head(stack);
+                                                stack_mut = cons(new Node$(0, op_op_5, operand_2), tail(stack));
                                                 op_stack_mut = op_t_6;
                                                 token_stream_mut = cons(op_1, t_1);
                                                 continue parse_helper;
@@ -2515,7 +2523,7 @@ var solver = (function (exports) {
                                         else if (head(op_stack).tag === 0) {
                                             pattern_matching_result_3 = 0;
                                         }
-                                        else if (token_prec(op_1) > token_prec(head(op_stack))) {
+                                        else if ((tail(op_stack), (op_op_6 = head(op_stack), token_prec(op_1) > token_prec(op_op_6)))) {
                                             pattern_matching_result_3 = 1;
                                         }
                                         else {
@@ -2544,7 +2552,7 @@ var solver = (function (exports) {
                             case 1: {
                                 let pattern_matching_result_4, op_op_9, op_t_10;
                                 if (!isEmpty(op_stack)) {
-                                    if (token_prec(op_1) < token_prec(head(op_stack))) {
+                                    if ((tail(op_stack), (op_op_8 = head(op_stack), token_prec(op_1) < token_prec(op_op_8)))) {
                                         pattern_matching_result_4 = 0;
                                         op_op_9 = head(op_stack);
                                         op_t_10 = tail(op_stack);
@@ -2561,14 +2569,16 @@ var solver = (function (exports) {
                                         const matchValue_3 = token_arity(op_op_9);
                                         switch (matchValue_3.tag) {
                                             case 0: {
-                                                stack_mut = cons(new Node$(0, op_op_9, head(stack)), tail(stack));
+                                                const operand_3 = head(stack);
+                                                stack_mut = cons(new Node$(0, op_op_9, operand_3), tail(stack));
                                                 op_stack_mut = op_t_10;
                                                 token_stream_mut = cons(op_1, t_1);
                                                 continue parse_helper;
                                             }
                                             case 1: {
                                                 const right_3 = head(stack);
-                                                stack_mut = cons(new Node$(1, op_op_9, head(tail(stack)), right_3), tail(tail(stack)));
+                                                const left_3 = head(tail(stack));
+                                                stack_mut = cons(new Node$(1, op_op_9, left_3, right_3), tail(tail(stack)));
                                                 op_stack_mut = op_t_10;
                                                 token_stream_mut = cons(op_1, t_1);
                                                 continue parse_helper;
@@ -2586,7 +2596,7 @@ var solver = (function (exports) {
                                         else if (head(op_stack).tag === 0) {
                                             pattern_matching_result_5 = 0;
                                         }
-                                        else if (token_prec(op_1) >= token_prec(head(op_stack))) {
+                                        else if ((tail(op_stack), (op_op_10 = head(op_stack), token_prec(op_1) >= token_prec(op_op_10)))) {
                                             pattern_matching_result_5 = 1;
                                         }
                                         else {
@@ -2626,7 +2636,8 @@ var solver = (function (exports) {
                 switch (matchValue.tag) {
                     case 1: {
                         const right = head(stack);
-                        stack_mut = cons(new Node$(1, op, head(tail(stack)), right), tail(tail(stack)));
+                        const left = head(tail(stack));
+                        stack_mut = cons(new Node$(1, op, left, right), tail(tail(stack)));
                         op_stack_mut = t;
                         token_stream_mut = empty();
                         continue parse_helper;
@@ -2635,7 +2646,8 @@ var solver = (function (exports) {
                         throw (new Error("unexpected token"));
                     }
                     default: {
-                        stack_mut = cons(new Node$(0, op, head(stack)), tail(stack));
+                        const operand = head(stack);
+                        stack_mut = cons(new Node$(0, op, operand), tail(stack));
                         op_stack_mut = t;
                         token_stream_mut = empty();
                         continue parse_helper;
@@ -2654,15 +2666,32 @@ var solver = (function (exports) {
     }
 
     function node_prec(node) {
-        return token_prec((node.tag === 1) ? node.fields[0] : ((node.tag === 2) ? node.fields[0] : node.fields[0]));
+        let op_3;
+        switch (node.tag) {
+            case 1: {
+                const op_1 = node.fields[0];
+                op_3 = op_1;
+                break;
+            }
+            case 2: {
+                const op_2 = node.fields[0];
+                op_3 = op_2;
+                break;
+            }
+            default: {
+                const op = node.fields[0];
+                op_3 = op;
+            }
+        }
+        return token_prec(op_3) | 0;
     }
 
     function node_print(node) {
-        let op_prec_1, op_prec_2, op_prec;
+        let op_prec_1, op_prec_2, operand, op_prec;
         const prec = node_prec(node) | 0;
         let pattern_matching_result, op_1, operand_1;
         if (node.tag === 0) {
-            if ((op_prec = (node_prec(node.fields[1]) | 0), (prec > op_prec) ? (op_prec > 0) : false)) {
+            if ((operand = node.fields[1], (node.fields[0], (op_prec = (node_prec(operand) | 0), (prec > op_prec) ? (op_prec > 0) : false)))) {
                 pattern_matching_result = 0;
                 op_1 = node.fields[0];
                 operand_1 = node.fields[1];
@@ -2684,6 +2713,7 @@ var solver = (function (exports) {
                 switch (node.tag) {
                     case 1: {
                         const right = node.fields[2];
+                        const op_3 = node.fields[0];
                         const left = node.fields[1];
                         let ls;
                         if ((op_prec_1 = (node_prec(left) | 0), (prec > op_prec_1) ? (op_prec_1 > 0) : false)) {
@@ -2701,16 +2731,19 @@ var solver = (function (exports) {
                         else {
                             rs = node_print(right);
                         }
-                        const arg20_2 = format_token(node.fields[0]);
+                        const arg20_2 = format_token(op_3);
                         return toText(printf("%s%s%s"))(ls)(arg20_2)(rs);
                     }
                     case 2: {
-                        const arg10_5 = format_token(node.fields[0]);
+                        const op_4 = node.fields[0];
+                        const arg10_5 = format_token(op_4);
                         return toText(printf("%s"))(arg10_5);
                     }
                     default: {
-                        const arg20_1 = node_print(node.fields[1]);
-                        const arg10_1 = format_token(node.fields[0]);
+                        const operand_2 = node.fields[1];
+                        const op_2 = node.fields[0];
+                        const arg20_1 = node_print(operand_2);
+                        const arg10_1 = format_token(op_2);
                         return toText(printf("%s%s"))(arg10_1)(arg20_1);
                     }
                 }
