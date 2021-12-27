@@ -19,7 +19,6 @@
 		width = 0,
 		max_depth;
 	$: cont_width = width * (2 ^ (max_depth));
-	$: console.log(cont_width, width, max_depth)
 </script>
 
 <main>
