@@ -83,35 +83,35 @@ let print_tree tree =
 let json_from_tree_line formula =
     match formula with
     | PropositionLine(ln, node) ->
-        sprintf "{type: \"p\", ln: %d, formula: \"%s\"}" ln (node_print node)
+        sprintf "{\"type\": \"p\", \"ln\": %d, \"formula\": \"%s\"}" ln (node_print node)
     | NegElimLine(ln, src, node) ->
         let src_ln = get_line src
-        sprintf "{type: \"ne\", ln: %d, src: %d, formula: \"%s\"}" ln src_ln (node_print node)
+        sprintf "{\"type\": \"ne\", \"ln\": %d, \"src\": %d, \"formula\": \"%s\"}" ln src_ln (node_print node)
     | AlphaLine(ln, src, node) ->
         let src_ln = get_line src
-        sprintf "{type: \"a\", ln: %d, src: %d, formula: \"%s\"}" ln src_ln (node_print node)
+        sprintf "{\"type\": \"a\", \"ln\": %d, \"src\": %d, \"formula\": \"%s\"}" ln src_ln (node_print node)
     | BetaLine(ln, beta_max, beta_min, node) ->
         let bmax_ln = get_line beta_max
         let bmin_ln = get_line beta_min
-        sprintf "{type: \"b\", ln: %d, src: %d, min_src: %d, formula: \"%s\"}" ln bmax_ln bmin_ln (node_print node)
+        sprintf "{\"type\": \"b\", \"ln\": %d, \"src\": %d, \"min_src\": %d, \"formula\": \"%s\"}" ln bmax_ln bmin_ln (node_print node)
     | EtaLine(ln, eta_max, eta_min, node) ->
         let emax_ln = get_line eta_max
         let emin_ln = get_line eta_min
-        sprintf "{type: \"e\", ln: %d, src: %d, min_src: %d, formula: \"%s\"}" ln emax_ln emin_ln (node_print node)
+        sprintf "{\"type\": \"e\", \"ln\": %d, \"src\": %d, \"min_src\": %d, \"formula\": \"%s\"}" ln emax_ln emin_ln (node_print node)
     | OpenLine(ln) ->
-        sprintf "{type: \"o\", ln: %d}" ln
+        sprintf "{\"type\": \"o\", \"ln\": %d}" ln
     | CloseLine(ln, close_max, close_min) ->
         let cmax_ln = get_line close_max
         let cmin_ln = get_line close_min
-        sprintf "{type: \"c\", ln: %d, src: %d, min_src: %d}" ln cmax_ln cmin_ln
+        sprintf "{\"type\": \"c\", \"ln\": %d, \"src\": %d, \"min_src\": %d}" ln cmax_ln cmin_ln
     | BranchLine(ln, node) ->
-        sprintf "{type: \"b\", ln: %d, formula: \"%s\"}" ln (node_print node)
+        sprintf "{\"type\": \"br\", \"ln\": %d, \"formula\": \"%s\"}" ln (node_print node)
 
 let rec json_from_tree_helper tree =
     match tree with
     | End (line) -> json_from_tree_line line
     | Continuous(line, tree) -> sprintf "%s, %s" (json_from_tree_line line) (json_from_tree_helper tree)
-    | Branch(left, right) -> sprintf "{type: \"bc\", left: [%s], right: [%s]}" (json_from_tree_helper left) (json_from_tree_helper right)
+    | Branch(left, right) -> sprintf "{\"type\": \"bc\", \"left\": [%s], \"right\": [%s]}" (json_from_tree_helper left) (json_from_tree_helper right)
 
 let json_from_tree tree = 
     "[" + json_from_tree_helper tree + "]"

@@ -2946,7 +2946,7 @@ var solver = (function (exports) {
                 const ln_1 = formula.fields[0] | 0;
                 const src_ln = get_line(src) | 0;
                 const arg30 = node_print(node_1);
-                return toText(printf("{type: \"ne\", ln: %d, src: %d, formula: \"%s\"}"))(ln_1)(src_ln)(arg30);
+                return toText(printf("{\"type\": \"ne\", \"ln\": %d, \"src\": %d, \"formula\": \"%s\"}"))(ln_1)(src_ln)(arg30);
             }
             case 2: {
                 const src_1 = formula.fields[1];
@@ -2954,7 +2954,7 @@ var solver = (function (exports) {
                 const ln_2 = formula.fields[0] | 0;
                 const src_ln_1 = get_line(src_1) | 0;
                 const arg30_1 = node_print(node_2);
-                return toText(printf("{type: \"a\", ln: %d, src: %d, formula: \"%s\"}"))(ln_2)(src_ln_1)(arg30_1);
+                return toText(printf("{\"type\": \"a\", \"ln\": %d, \"src\": %d, \"formula\": \"%s\"}"))(ln_2)(src_ln_1)(arg30_1);
             }
             case 3: {
                 const node_3 = formula.fields[3];
@@ -2964,7 +2964,7 @@ var solver = (function (exports) {
                 const bmax_ln = get_line(beta_max) | 0;
                 const bmin_ln = get_line(beta_min) | 0;
                 const arg40 = node_print(node_3);
-                return toText(printf("{type: \"b\", ln: %d, src: %d, min_src: %d, formula: \"%s\"}"))(ln_3)(bmax_ln)(bmin_ln)(arg40);
+                return toText(printf("{\"type\": \"b\", \"ln\": %d, \"src\": %d, \"min_src\": %d, \"formula\": \"%s\"}"))(ln_3)(bmax_ln)(bmin_ln)(arg40);
             }
             case 4: {
                 const node_4 = formula.fields[3];
@@ -2974,11 +2974,11 @@ var solver = (function (exports) {
                 const emax_ln = get_line(eta_max) | 0;
                 const emin_ln = get_line(eta_min) | 0;
                 const arg40_1 = node_print(node_4);
-                return toText(printf("{type: \"e\", ln: %d, src: %d, min_src: %d, formula: \"%s\"}"))(ln_4)(emax_ln)(emin_ln)(arg40_1);
+                return toText(printf("{\"type\": \"e\", \"ln\": %d, \"src\": %d, \"min_src\": %d, \"formula\": \"%s\"}"))(ln_4)(emax_ln)(emin_ln)(arg40_1);
             }
             case 5: {
                 const ln_5 = formula.fields[0] | 0;
-                return toText(printf("{type: \"o\", ln: %d}"))(ln_5);
+                return toText(printf("{\"type\": \"o\", \"ln\": %d}"))(ln_5);
             }
             case 6: {
                 const ln_6 = formula.fields[0] | 0;
@@ -2986,19 +2986,19 @@ var solver = (function (exports) {
                 const close_max = formula.fields[1];
                 const cmax_ln = get_line(close_max) | 0;
                 const cmin_ln = get_line(close_min) | 0;
-                return toText(printf("{type: \"c\", ln: %d, src: %d, min_src: %d}"))(ln_6)(cmax_ln)(cmin_ln);
+                return toText(printf("{\"type\": \"c\", \"ln\": %d, \"src\": %d, \"min_src\": %d}"))(ln_6)(cmax_ln)(cmin_ln);
             }
             case 7: {
                 const node_5 = formula.fields[1];
                 const ln_7 = formula.fields[0] | 0;
                 const arg20_6 = node_print(node_5);
-                return toText(printf("{type: \"b\", ln: %d, formula: \"%s\"}"))(ln_7)(arg20_6);
+                return toText(printf("{\"type\": \"br\", \"ln\": %d, \"formula\": \"%s\"}"))(ln_7)(arg20_6);
             }
             default: {
                 const node = formula.fields[1];
                 const ln = formula.fields[0] | 0;
                 const arg20 = node_print(node);
-                return toText(printf("{type: \"p\", ln: %d, formula: \"%s\"}"))(ln)(arg20);
+                return toText(printf("{\"type\": \"p\", \"ln\": %d, \"formula\": \"%s\"}"))(ln)(arg20);
             }
         }
     }
@@ -3017,7 +3017,7 @@ var solver = (function (exports) {
                 const left = tree.fields[0];
                 const arg20_1 = json_from_tree_helper(right);
                 const arg10_1 = json_from_tree_helper(left);
-                return toText(printf("{type: \"bc\", left: [%s], right: [%s]}"))(arg10_1)(arg20_1);
+                return toText(printf("{\"type\": \"bc\", \"left\": [%s], \"right\": [%s]}"))(arg10_1)(arg20_1);
             }
             default: {
                 const line = tree.fields[0];
