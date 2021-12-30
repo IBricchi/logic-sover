@@ -2686,6 +2686,27 @@ var solver = (function (exports) {
         return token_prec(op_3) | 0;
     }
 
+    function node_assoc(node) {
+        let op_3;
+        switch (node.tag) {
+            case 1: {
+                const op_1 = node.fields[0];
+                op_3 = op_1;
+                break;
+            }
+            case 2: {
+                const op_2 = node.fields[0];
+                op_3 = op_2;
+                break;
+            }
+            default: {
+                const op = node.fields[0];
+                op_3 = op;
+            }
+        }
+        return token_assoc(op_3);
+    }
+
     function node_print(node) {
         let op_prec_1, op_prec_2, operand, op_prec;
         const prec = node_prec(node) | 0;
@@ -2716,7 +2737,7 @@ var solver = (function (exports) {
                         const op_3 = node.fields[0];
                         const left = node.fields[1];
                         let ls;
-                        if ((op_prec_1 = (node_prec(left) | 0), (prec > op_prec_1) ? (op_prec_1 > 0) : false)) {
+                        if ((op_prec_1 = (node_prec(left) | 0), ((prec > op_prec_1) ? (op_prec_1 > 0) : false) ? true : ((prec === op_prec_1) ? equals$1(node_assoc(left), new TokenAssoc(1)) : false))) {
                             const arg10_2 = node_print(left);
                             ls = toText(printf("(%s)"))(arg10_2);
                         }
@@ -2724,7 +2745,7 @@ var solver = (function (exports) {
                             ls = node_print(left);
                         }
                         let rs;
-                        if ((op_prec_2 = (node_prec(right) | 0), (prec > op_prec_2) ? (op_prec_2 > 0) : false)) {
+                        if ((op_prec_2 = (node_prec(right) | 0), ((prec > op_prec_2) ? (op_prec_2 > 0) : false) ? true : ((prec === op_prec_2) ? equals$1(node_assoc(right), new TokenAssoc(0)) : false))) {
                             const arg10_3 = node_print(right);
                             rs = toText(printf("(%s)"))(arg10_3);
                         }

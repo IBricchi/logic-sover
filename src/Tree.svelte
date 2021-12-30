@@ -1,57 +1,66 @@
 <script>
     import Line from "./Line.svelte";
+    import Connect from "./Connect.svelte";
 
     // inputs
     export let lines;
 
     // outputs
     export let highlights;
+    export let box;
 
     let has_branch;
     $: has_branch = lines.length != 0 ? lines.at(-1).type == "bc" : false;
 
-    let section;
-    $: if (section && lines.length != 0) {
-        let lines = section.querySelectorAll(".line");
-        let min_widths = Array.from(lines).map((line) => {
-            let m = line.style.minWidth;
-            return m.substring(0, m.length - 2);
-        });
-        let min_width = Math.max(...min_widths);
-        console.log(min_width, min_widths)
-        // let min_width = min_widths.reduce((a, b) => (a < b) ? a : b, 0);
-        lines.forEach((line) => {
-            line.style.width = `${min_width}pt`;
-            console.log(min_width)
-        });
-    }
+    let left = false;
+    let right = false;
 </script>
 
-<div class="section-container" bind:this={section}>
-    {#each lines as line}
-        {#if line.type != "bc"}
-            <Line {line} />
-        {/if}
-    {/each}
+<div class="section-container">
+    <div class="section-grid" bind:this={box}>
+        {#each lines as line}
+            {#if line.type != "bc"}
+                <Line {line} />
+            {/if}
+        {/each}
+    </div>
 </div>
 
 {#if has_branch}
+    <Connect start={box} end={left} />
+    <Connect start={box} end={right} />
     <div class="split-container">
         <div class="split split-left">
-            <svelte:self lines={lines.at(-1).left} bind:highlights />
+            <svelte:self
+                lines={lines.at(-1).left}
+                bind:highlights
+                bind:box={left}
+            />
         </div>
         <div class="split split-right">
-            <svelte:self lines={lines.at(-1).right} bind:highlights />
+            <svelte:self
+                lines={lines.at(-1).right}
+                bind:highlights
+                bind:box={right}
+            />
         </div>
     </div>
 {/if}
 
 <style>
     .section-container {
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: repeat(auto-fill, auto);
+        width: auto;
+        margin: auto;
     }
+    .section-grid {
+        padding-bottom: 10px;
+        display: inline-grid;
+        grid-template-columns: auto auto auto;
+        grid-gap: 10px;
+        justify-items: left;
+        margin-bottom: 20px;
+    }
+
     .split-container {
         display: flex;
         flex-direction: row;
@@ -59,6 +68,6 @@
     }
     .split {
         flex-grow: 1;
-        border-style: dotted;
+        /* border-style: dotted; */
     }
 </style>

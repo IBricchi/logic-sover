@@ -92,6 +92,13 @@ let node_prec node =
                 | AtomNode(op) -> op
     token_prec op
 
+let node_assoc node =
+    let op = match node with
+                | UnaryNode(op, _) -> op
+                | BinaryNode(op, _, _) -> op
+                | AtomNode(op) -> op
+    token_assoc op
+
 let rec node_print node =
     let prec = node_prec node
     match node with
@@ -100,12 +107,12 @@ let rec node_print node =
     | UnaryNode(op, operand) ->
         sprintf "%s%s" (format_token op) (node_print operand)
     | BinaryNode(op, left, right) ->
-        let ls = match let op_prec = node_prec left in prec > op_prec && op_prec > 0 with
+        let ls = match let op_prec = node_prec left in (prec > op_prec && op_prec > 0) || (prec = op_prec && node_assoc left = RIGHT) with
                     | true ->
                         sprintf "(%s)" (node_print left)
                     | false ->
                         node_print left
-        let rs = match let op_prec = node_prec right in prec > op_prec && op_prec > 0 with
+        let rs = match let op_prec = node_prec right in (prec > op_prec && op_prec > 0) || (prec = op_prec && node_assoc right = LEFT) with
                     | true ->
                         sprintf "(%s)" (node_print right)
                     | false ->

@@ -20,7 +20,7 @@
         vertical-align: middle;
     }
     input{
-        grid-column-start: 0;
+        grid-column-start: 1;
         grid-column-end: 4;
     }
     button{

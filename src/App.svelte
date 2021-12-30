@@ -15,10 +15,6 @@
 	let try_gen_tree = (query) => {
 		tree = JSON.parse(solver.gen_tree(query));
 	};
-	let cont_width,
-		width = 0,
-		max_depth;
-	$: cont_width = width * (2 ^ (max_depth));
 </script>
 
 <main>
@@ -27,14 +23,11 @@
 	{#if use_text}
 		<code>{tree_text}</code>
 	{:else if tree != []}
-		<div class="tree-cont" style="width:{cont_width}pt">
+		<div class="tree-cont">
 		<!-- <div class="tree-cont"> -->
 			<Tree
 				highlights={[]}
 				lines={tree}
-				depth={0}
-				bind:width
-				bind:max_depth
 			/>
 		</div>
 	{/if}
